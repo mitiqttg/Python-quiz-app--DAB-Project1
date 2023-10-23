@@ -1,4 +1,4 @@
-class Queue {
+class makeQueue {
     constructor() {
       this.elements = {};
       this.head = 0;
@@ -25,4 +25,4 @@ class Queue {
     }
   }
 
-  export { Queue }
+  export { makeQueue }

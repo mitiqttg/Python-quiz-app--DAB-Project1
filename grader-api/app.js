@@ -1,7 +1,7 @@
 import { serve } from "./deps.js";
 import { grade } from "./services/gradingService.js";
-import { Queue } from "./src/Queue.js";
 import { createClient } from "./deps.js";
+import { makeQueue } from "./src/makeQueue.js";
 
 const client = createClient({
   url: "redis://redis:6379",
@@ -10,13 +10,13 @@ const client = createClient({
 
 await client.connect();
 
-let GradingQueue = new Queue();
+let gradingQueue = new makeQueue();
 
 const handleRequest = async (request) => {
 
   const requestData = await request.json();
 
-  GradingQueue.enqueue(requestData);
+  gradingQueue.enqueue(requestData);
   StartGrading();
   return new Response("OK", { status: 200 });
 
@@ -33,11 +33,11 @@ const StartGrading = async() => {
 
   InGrading = true;
 
-  while (GradingQueue.length > 0) {
+  while (gradingQueue.length > 0) {
     
     try {
 
-      const gradeData = GradingQueue.dequeue();
+      const gradeData = gradingQueue.dequeue();
 
       console.log("Grading submission:");
       console.log(gradeData);
