@@ -33,10 +33,8 @@ const StartGrading = async() => {
 
   InGrading = true;
 
-  while (gradingQueue.length > 0) {
-    
+  while (gradingQueue.length > 0) {   
     try {
-
       const gradeData = gradingQueue.dequeue();
 
       console.log("Grading submission:");
@@ -52,9 +50,7 @@ const StartGrading = async() => {
       console.log("Grading error")
     }    
   }
-
   InGrading = false;
-
 }
 
 const portConfig = { port: 7000, hostname: "0.0.0.0" };

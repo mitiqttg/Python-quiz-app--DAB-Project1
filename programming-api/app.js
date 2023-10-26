@@ -1,11 +1,11 @@
 import * as programmingAssignmentService from "./services/programmingAssignmentService.js";
 import * as programmingSubmissionService from "./services/programmingAssignmentSubmissionService.js"
-import { serve } from "./deps.js";
-import { createClient } from "./deps.js";
 import { cacheMethodCalls } from "./util/cacheUtil.js";
+import { createClient } from "./deps.js";
+import { serve } from "./deps.js";
 
 const cachedAssignmentService = cacheMethodCalls(programmingAssignmentService, []);
-const cachedSubmissionService = cacheMethodCalls(programmingSubmissionService, ["addSubmission", "addGraderResultsToSubmission"]);
+const cachedSubmissionService = cacheMethodCalls(programmingSubmissionService, ["addSubmission", "addGraderResults"]);
 
 const graderClient = createClient({
   url: "redis://redis:6379",
@@ -50,25 +50,25 @@ const handleGetNextAssignmentForUser = async (request, urlPatternResult) => {
 
   const userId = urlPatternResult.pathname.groups.user;
 
-  //Find all assignments
+  // Find all assignments
   const programmingAssignments = await cachedAssignmentService.findAll();
 
-  //Find submissions by user
-  const submissions = await cachedSubmissionService.findAllForUser(userId);
+  // Find submissions by user
+  const submissions = await cachedSubmissionService.findAllFromUser(userId);
 
-  //Filter complete and correct submissions
-  const correctSubmissions = submissions.filter(s => s.correct === true);
+  // Filter complete and correct submissions
+  const correctSubmissions = submissions.filter(sub => sub.correct === true);
 
-  let nextAssignmentOrder = 1;
-  correctSubmissions.forEach(s => {
-    const assignment = programmingAssignments.find(a => a.id === s.programming_assignment_id);
-    if (assignment.assignment_order === nextAssignmentOrder) {
-      //user has done this assignment correctly, move to the next assignment
-      nextAssignmentOrder++;
+  let assignmentNumber = 1;
+  correctSubmissions.forEach(sub => {
+    const assignment = programmingAssignments.find(assignment => assignment.id === sub.programming_assignment_id);
+    // If the assignment is graded correct, move to the next assignment
+    if (assignment.assignment_order === assignmentNumber) {
+      assignmentNumber++;
     }
   });
 
-  const nextAssignment = programmingAssignments.find(a => a.assignment_order === nextAssignmentOrder);
+  const nextAssignment = programmingAssignments.find(assignment => assignment.assignment_order === assignmentNumber);
 
   const response = {
     title: "",
@@ -88,13 +88,13 @@ const handleGetNextAssignmentForUser = async (request, urlPatternResult) => {
 const handleFetchUserPoints = async (request, urlPatternResult) => {
   const user = urlPatternResult.pathname.groups.user;
 
-  const userSubmissions = await cachedSubmissionService.findAllForUser(user);
-  const correctSubmissions = userSubmissions.filter(s => s.correct === true);
+  const userSubmissions = await cachedSubmissionService.findAllFromUser(user);
+  const correctSubmissions = userSubmissions.filter(sub => sub.correct === true);
 
   let correctIds = [];
-  correctSubmissions.forEach(s => {
-    if (!correctIds.includes(s.programming_assignment_id)) {
-      correctIds = [s.programming_assignment_id, ...correctIds];
+  correctSubmissions.forEach(sub => {
+    if (!correctIds.includes(sub.programming_assignment_id)) {
+      correctIds = [sub.programming_assignment_id, ...correctIds];
     }
   })
 
@@ -113,7 +113,7 @@ const handleFetchFeedback = async (request, urlPatternResult) => {
     return new Response("Not found", { status: 404 });
   }
 
-  const submission = submissions.find(s => s.id === Number(id));
+  const submission = submissions.find(sub => sub.id === Number(id));
   if (!submission) {
     return new Response("Not found", { status: 404 });
   }
@@ -137,9 +137,9 @@ const handleSubmitAssignment = async (request) => {
     return new Response("Bad Request", { status: 400 });
   }
 
-  //check if user has a submission in grading
-  const userSubmissions = await cachedSubmissionService.findAllForUser(submissionData.user);
-  const pendingSubmission = userSubmissions.find(s => s.status === "pending");
+  // Check if user has a submission in grading
+  const userSubmissions = await cachedSubmissionService.findAllFromUser(submissionData.user);
+  const pendingSubmission = userSubmissions.find(sub => sub.status === "pending");
   if (pendingSubmission) {
     console.log("previous submission still in grading");
     return Response.json({
@@ -150,8 +150,8 @@ const handleSubmitAssignment = async (request) => {
   const addResult = await cachedSubmissionService.addSubmission(submissionData);
   submissionData.id = addResult[0].id;
 
-  //check if identical code has been submitted
-  const allSubmissions = await cachedSubmissionService.findAllForAssignment(submissionData.assignmentID);
+  // Check if identical code has been submitted
+  const allSubmissions = await cachedSubmissionService.findAllFromAssignment(submissionData.assignmentID);
 
   let shouldSendToGrader = true;
 
@@ -173,28 +173,28 @@ const handleSubmitAssignment = async (request) => {
     id: submissionData.id
   }
   
-  //If grade found, add graded submission
+  // If grade found, add graded submission
   if (!shouldSendToGrader) {
     cachedSubmissionService.addGraderResultsToSubmission(submissionData.id, submissionData.grader_feedback, submissionData.correct);
     return Response.json(response);
   }
 
-  //Send submission to grader
+  // Send submission to grader
   sendToGrader(submissionData);
   return Response.json(response);
 }
 
 const sendToGrader = async (submissionData) => {
 
-  //Get testcode for the assignment
-  const programmingAssignments = await cachedAssignmentService.findOne(submissionData.assignmentID);
+  // Get testcode for the assignment
+  const programmingAssignments = await cachedAssignmentService.findAnAssignment(submissionData.assignmentID);
   if (programmingAssignments.length === 0) {
     return new Response("Bad Request", { status: 400 });
   }
 
   const testCode = programmingAssignments[0]["test_code"];
 
-  //Send data to grader
+  // Send data to grader
 
   const data = {
     testCode: testCode,
@@ -202,7 +202,6 @@ const sendToGrader = async (submissionData) => {
     id: submissionData.id,
   };
 
-  //console.log("sending to grader");
   fetch("http://nginx:8000/", {
     method: "POST",
     headers: {

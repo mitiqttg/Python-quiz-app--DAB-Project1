@@ -12,27 +12,11 @@ const createGradingContainer = async (code, testCode, randomKey) => {
   const graderContainerName = `submission-image-${randomKey}`;
   const tmpGraderContainerName = `${graderContainerName}-tmp`;
 
-  await run([
-    "docker",
-    "create",
-    "--name",
-    tmpGraderContainerName,
-    "grader-image",
-  ]);
+  await run(["docker", "create", "--name", tmpGraderContainerName, "grader-image",]);
 
-  await run([
-    "docker",
-    "cp",
-    codeFileName,
-    `${tmpGraderContainerName}:/app/submission/code.py`,
-  ]);
+  await run(["docker", "cp", codeFileName, `${tmpGraderContainerName}:/app/submission/code.py`,]);
 
-  await run([
-    "docker",
-    "cp",
-    testFileName,
-    `${tmpGraderContainerName}:/app/submission/test-code.py`,
-  ]);
+  await run(["docker", "cp", testFileName, `${tmpGraderContainerName}:/app/submission/test-code.py`,]);
 
   await run(["docker", "commit", tmpGraderContainerName, graderContainerName]);
 
@@ -45,20 +29,9 @@ const createGradingContainer = async (code, testCode, randomKey) => {
 };
 
 const runGradingContainer = async (graderContainerName, randomKey) => {
-  await run([
-    "docker",
-    "run",
-    "--name",
-    `${graderContainerName}-image`,
-    graderContainerName,
-  ]);
+  await run(["docker", "run", "--name", `${graderContainerName}-image`, graderContainerName,]);
 
-  await run([
-    "docker",
-    "cp",
-    `${graderContainerName}-image:/app/submission/result.data`,
-    `result-${randomKey}.data`,
-  ]);
+  await run(["docker", "cp", `${graderContainerName}-image:/app/submission/result.data`, `result-${randomKey}.data`,]);
 
   await run(["docker", "image", "rm", "-f", `${graderContainerName}`]);
 
@@ -73,13 +46,9 @@ const runGradingContainer = async (graderContainerName, randomKey) => {
 
 const grade = async (code, testCode) => {
 
-  const randomKey = Math.floor(Math.random() * 900000000 + 100000000);
+  const randomKey = Math.floor(Math.random()*10000 + 28000);
 
-  const graderContainerName = await createGradingContainer(
-    code,
-    testCode,
-    randomKey,
-  );
+  const graderContainerName = await createGradingContainer(code, testCode, randomKey);
   const result = await runGradingContainer(graderContainerName, randomKey);
 
   return result;

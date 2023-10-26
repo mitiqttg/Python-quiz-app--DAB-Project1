@@ -13,8 +13,8 @@ const findAllSubmissions = async () => {
 };
 
 const addSubmission = async (submission) => {
-    return await sql`INSERT INTO programming_assignment_submissions (programming_assignment_id, code, user_uuid) 
-                        VALUES (${submission.assignmentID}, ${submission.code}, ${submission.user}) RETURNING id;`
+    return await sql`INSERT INTO programming_assignment_submissions ( programming_assignment_id, code, user_uuid ) 
+                        VALUES ( ${submission.assignmentID}, ${submission.code}, ${submission.user} ) RETURNING id;`
 }
 
 const clearSubmissions = async () => {
@@ -25,7 +25,7 @@ const addGraderResults = async (submissionId, result, correctness) => {
     return await sql`UPDATE programming_assignment_submissions 
                       SET grader_feedback = ${result},
                         correct = ${correctness},
-                        status = ${"processed"}
+                        status = ${'processed'}
                       WHERE id = ${submissionId}`
 }
 
