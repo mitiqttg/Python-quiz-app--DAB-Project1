@@ -1,8 +1,7 @@
 import * as programmingAssignmentService from "./services/programmingAssignmentService.js";
-import * as programmingSubmissionService from "./services/programmingAssignmentSubmissionService.js"
+import * as programmingSubmissionService from "./services/programmingSubmissionService.js"
 import { cacheMethodCalls } from "./util/cacheUtil.js";
-import { createClient } from "./deps.js";
-import { serve } from "./deps.js";
+import { createClient, serve } from "./deps.js";
 
 const cachedAssignmentService = cacheMethodCalls(programmingAssignmentService, []);
 const cachedSubmissionService = cacheMethodCalls(programmingSubmissionService, ["addSubmission", "addGraderResults"]);
@@ -27,7 +26,7 @@ const handleGradeResultReceived = async (message, channel) => {
     correct = true;
   }
   
-  await cachedSubmissionService.addGraderResultsToSubmission(graderResult.id, graderResult.result, correct);
+  await cachedSubmissionService.addGraderResults(graderResult.id, graderResult.result, correct);
 }
 
 //--------Request handling--------//
@@ -175,7 +174,7 @@ const handleSubmitAssignment = async (request) => {
   
   // If grade found, add graded submission
   if (!shouldSendToGrader) {
-    cachedSubmissionService.addGraderResultsToSubmission(submissionData.id, submissionData.grader_feedback, submissionData.correct);
+    cachedSubmissionService.addGraderResults(submissionData.id, submissionData.grader_feedback, submissionData.correct);
     return Response.json(response);
   }
 
