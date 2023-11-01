@@ -14,14 +14,14 @@ class makeQueue {
     this.head++;
     return item;
   }
-  peek() {
-    return this.elements[this.head];
-  }
   get length() {
     return this.tail - this.head;
   }
   get isEmpty() {
     return this.length === 0;
+  }
+  peek() {
+    return this.elements[this.head];
   }
 }
 export { makeQueue }

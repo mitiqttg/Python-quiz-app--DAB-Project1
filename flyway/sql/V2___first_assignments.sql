@@ -12,7 +12,7 @@ class TestHello(unittest.TestCase):
     self.assertEqual(hello(), "Hello", "Function should return \"Hello\"")
 ');
 
-INSERT INTO programming_assignments (title, assignment_order, handout, test_code) VALUES ('Hello world', 2, 'Write a function "hello" that returns the string "Hello world!"', 'import socket
+INSERT INTO programming_assignments (title, assignment_order, handout, test_code) VALUES ('Hello world', 2, 'Write a function "world" that returns the string "Hello world!"', 'import socket
 def guard(*args, **kwargs):
   raise Exception("Internet is bad for you :|")
 socket.socket = guard
@@ -22,11 +22,11 @@ from code import *
 
 class TestHello(unittest.TestCase):
 
-  def test_hello(self):
-    self.assertEqual(hello(), "Hello world!", "Function should return \"Hello world!\"")
+  def test_world(self):
+    self.assertEqual(world(), "Hello world!", "Function should return \"Hello world!\"")
 ');
 
-INSERT INTO programming_assignments (title, assignment_order, handout, test_code) VALUES ('Sum', 3, 'Write a function "sum" that takes two numbers as parameters and returns their sum.', 'import socket
+INSERT INTO programming_assignments (title, assignment_order, handout, test_code) VALUES ('Take a sum', 3, 'Write a function "sum" that takes two numbers as parameters and returns their sum.', 'import socket
 def guard(*args, **kwargs):
   raise Exception("Internet is bad for you :|")
 socket.socket = guard

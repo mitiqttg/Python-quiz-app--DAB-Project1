@@ -1,33 +1,33 @@
 {
   "headers": {
-    "x-amz-replication-status": "COMPLETED",
-    "x-amz-version-id": "l42zB1FoDy0fahkZp_UoINx2xRjeW7ND",
+    "server-timing": "fetchSource;dur=16",
+    "vary": "Accept-Encoding, Origin",
+    "cross-origin-embedder-policy": "same-origin",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "x-amz-cf-id": "76UnTEn52NXGUNgSUz8CcgQ1sW3Hg1w267OVoJCAts-6tVUX8isoJQ==",
+    "x-frame-options": "DENY",
+    "x-amz-cf-pop": "ARN56-P2",
     "x-cache": "Hit from cloudfront",
     "x-content-type-options": "nosniff",
-    "referrer-policy": "strict-origin-when-cross-origin",
-    "age": "13889470",
-    "x-amz-cf-pop": "HEL51-P2",
-    "cross-origin-resource-policy": "same-origin",
+    "x-amz-replication-status": "COMPLETED",
     "access-control-allow-origin": "*",
-    "x-amz-cf-id": "ptqBshzhYwo38-kDydBaK8AtCkKMqG3UrAA2fAC4ZhmW1GF0t0lDuw==",
-    "vary": "Accept-Encoding, Origin",
-    "x-frame-options": "DENY",
-    "cross-origin-opener-policy": "same-origin",
-    "server": "deno/gcp-europe-north1",
-    "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox",
-    "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
-    "cross-origin-embedder-policy": "same-origin",
     "cache-control": "public, max-age=31536000, immutable",
     "content-type": "application/javascript",
-    "via": "http/2 edgeproxy-h",
-    "date": "Sun, 21 May 2023 14:04:50 GMT",
-    "server-timing": "fetchSource;dur=12",
+    "cross-origin-resource-policy": "same-origin",
+    "cross-origin-opener-policy": "same-origin",
     "etag": "W/\"57a6d8467f9843743c48aec5b5fa401b\"",
-    "last-modified": "Fri, 25 Mar 2022 13:32:48 GMT"
+    "age": "15643027",
+    "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+    "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+    "via": "http/2 edgeproxy-h",
+    "x-amz-version-id": "l42zB1FoDy0fahkZp_UoINx2xRjeW7ND",
+    "date": "Wed, 03 May 2023 10:07:22 GMT",
+    "last-modified": "Fri, 25 Mar 2022 13:32:48 GMT",
+    "server": "deno/gcp-europe-north1"
   },
   "url": "https://deno.land/std@0.132.0/node/_crypto/crypto_browserify/asn1.js/constants/der.js",
   "now": {
-    "secs_since_epoch": 1698567365,
-    "nanos_since_epoch": 132704147
+    "secs_since_epoch": 1698751469,
+    "nanos_since_epoch": 237326193
   }
 }

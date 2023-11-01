@@ -45,7 +45,7 @@ const handleRequest = async (request) => {
   return await mapping.fn(request, mappingResult);
 };
 
-const handleGetNextAssignmentForUser = async (request, urlPatternResult) => {
+const getNextAssignmentForUser = async (request, urlPatternResult) => {
 
   const userId = urlPatternResult.pathname.groups.user;
 
@@ -84,7 +84,7 @@ const handleGetNextAssignmentForUser = async (request, urlPatternResult) => {
   return Response.json(response);
 }
 
-const handleFetchUserPoints = async (request, urlPatternResult) => {
+const getUserPoint = async (request, urlPatternResult) => {
   const user = urlPatternResult.pathname.groups.user;
 
   const userSubmissions = await cachedSubmissionService.findAllFromUser(user);
@@ -103,7 +103,7 @@ const handleFetchUserPoints = async (request, urlPatternResult) => {
 }
 
 
-const handleFetchFeedback = async (request, urlPatternResult) => {
+const handleFeedback = async (request, urlPatternResult) => {
 
   const id = urlPatternResult.pathname.groups.submissionId;
 
@@ -140,7 +140,6 @@ const handleSubmitAssignment = async (request) => {
   const userSubmissions = await cachedSubmissionService.findAllFromUser(submissionData.user);
   const pendingSubmission = userSubmissions.find(sub => sub.status === "pending");
   if (pendingSubmission) {
-    console.log("previous submission still in grading");
     return Response.json({
       id: -1
     });
@@ -188,7 +187,7 @@ const sendToGrader = async (submissionData) => {
   // Get testcode for the assignment
   const programmingAssignments = await cachedAssignmentService.findAnAssignment(submissionData.assignmentID);
   if (programmingAssignments.length === 0) {
-    return new Response("Bad Request", { status: 400 });
+    return new Response("Bad request", { status: 400 });
   }
 
   const testCode = programmingAssignments[0]["test_code"];
@@ -222,17 +221,17 @@ const urlMapping = [
   {
     method: "GET",
     pattern: new URLPattern({ pathname: "/next/:user" }),
-    fn: handleGetNextAssignmentForUser,
+    fn: getNextAssignmentForUser,
   },
   {
     method: "GET",
     pattern: new URLPattern({ pathname: "/points/:user" }),
-    fn: handleFetchUserPoints,
+    fn: getUserPoint,
   },
   {
     method: "GET",
     pattern: new URLPattern({ pathname: "/feedback/:submissionId" }),
-    fn: handleFetchFeedback,
+    fn: handleFeedback,
   },
 ];
 

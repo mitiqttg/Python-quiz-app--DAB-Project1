@@ -1,6 +1,6 @@
 const { test, expect } = require("@playwright/test");
 
-test("Server responds with a page with the title 'Programming assignments'", async ({ page }) => {
+test("Server responds with a page with the title 'Programming Python'", async ({ page }) => {
   await page.goto("/");
-  expect(await page.title()).toBe("Programming assignments");
+  expect(await page.title()).toBe("Programming Python");
 });

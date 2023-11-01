@@ -16,4 +16,8 @@ module.exports = {
       },
     },
   ],
+  expect: {
+    // Wait for the condition at max 30 seconds.
+    timeout: 30000,
+  },
 };

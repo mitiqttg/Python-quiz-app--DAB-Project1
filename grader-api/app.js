@@ -1,7 +1,6 @@
-import { serve } from "./deps.js";
-import { grade } from "./services/gradingService.js";
-import { createClient } from "./deps.js";
 import { makeQueue } from "./src/makeQueue.js";
+import { serve, createClient } from "./deps.js";
+import { grade } from "./services/gradingService.js";
 
 const client = createClient({
   url: "redis://redis:6379",
@@ -36,13 +35,9 @@ const StartGrading = async() => {
   while (gradingQueue.length > 0) {   
     try {
       const gradeData = gradingQueue.dequeue();
-
-      console.log("Grading submission:");
-      console.log(gradeData);
-  
+      const id = gradeData.id;
       const code = gradeData.code;
       const testCode = gradeData.testCode;
-      const id = gradeData.id;
   
       client.publish("grade-results", JSON.stringify({ id: id, result: await grade(code, testCode) }));
 

@@ -1,24 +1,21 @@
 <script>
-    import {
-        latestSubmissionId,
-        currentFeedback,
-    } from "../stores/assignmentStore";
+    import { currentFeedback } from "../stores/assignmentStore";
 </script>
 
-<div class="mx-4 my-4 bg-slate-50 overflow-auto rounded-[4px]">
-    <div class="px-2 py-4 space-y-2 text-base">
+<div class="mx-4 my-4 bg-gray-200 overflow-auto rounded-[8px]">
+    <div class="px-2 py-4 space-y-2 text-black">
         {#if !$currentFeedback}
             <p>Waiting for grader feedback...</p>
         {:else if $currentFeedback.correct}
-            <p>Submission was correct</p>
+            <p class="text-green-600">Passed</p>
             <pre
-                class="text-green-700"
-                id="graderFeedbackSuccess">{$currentFeedback.feedback}</pre>
+                class="text-green-600"
+                id="passFeedback">{$currentFeedback.feedback}</pre>
         {:else}
-            <p>Submission failed</p>
+            <p class="text-red-600">Failed</p>
             <pre
-                class="text-red-700"
-                id="graderFeedbackFail">{$currentFeedback.feedback}</pre>
+                class="text-red-600"
+                id="failFeedback">{$currentFeedback.feedback}</pre>
         {/if}
     </div>
 </div>

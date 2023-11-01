@@ -1,14 +1,10 @@
 <script>
     import { userUuid } from "../stores/stores.js";
-    import {
-        latestSubmissionId,
-        currentFeedback,
-        points,
-    } from "../stores/assignmentStore.js";
-
-    import AssignmentDescription from "./AssignmentDescription.svelte";
     import SubmitActions from "./SubmitActions.svelte";
     import GraderFeedback from "./GraderFeedback.svelte";
+    import AssignmentDescription from "./AssignmentDescription.svelte";
+    import { latestSubmissionId, currentFeedback, points } from "../stores/assignmentStore.js";
+
 
     const getAssignment = async () => {
         const response = await fetch("/api/next/" + $userUuid);
@@ -41,7 +37,6 @@
     };
 
     const nextClicked = () => {
-        console.log("next");
         assignmentPromise = getAssignment();
         $latestSubmissionId = null;
         $currentFeedback = null;
@@ -50,12 +45,12 @@
     let assignmentPromise = getAssignment();
 </script>
 
-<div class="container mx-auto columns-1 bg-sky-100">
+<div class="container mx-auto columns-1 bg-indigo-200 rounded-[8px]">
     {#await assignmentPromise}
-        <p class="my-2 px-2 py-2">Loading assignment</p>
+        <p class="my-2 px-2 py-2 text-center">Loading</p>
     {:then assignment}
         {#if !assignment || assignment.handout === ""}
-            <p class="my-2 px-2 py-2">No assignments available</p>
+            <p class="my-2 px-2 py-2 text-center text-black">No available assignment</p>
         {:else}
             <AssignmentDescription
                 title={assignment.title}
@@ -64,12 +59,13 @@
             <SubmitActions assignmentID={assignment.id} {onSubmit} />
             {#if $latestSubmissionId}
                 <GraderFeedback />
-            {/if}
+            {/if} 
             {#if $currentFeedback && $currentFeedback.correct}
                 <button
-                    class="bg-sky-400 mx-4 my-2 px-2 py-2 rounded-[4px] text-white"
-                    on:click={nextClicked}>Next</button
-                >
+                    class="bg-indigo-500 hover:bg-indigo-800 mx-4 my-2 px-2 py-2 rounded-[8px] text-gray-300 hover:text-white"
+                    on:click={nextClicked}>
+                    Next
+                </button>
             {/if}
         {/if}
     {/await}

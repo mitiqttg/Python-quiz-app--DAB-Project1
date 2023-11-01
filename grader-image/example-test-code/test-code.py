@@ -8,5 +8,5 @@ from code import *
 
 class TestHello(unittest.TestCase):
 
-  def test_hello(self):
-    self.assertEqual(hello(), "Hello world!", "Function should return 'Hello world!'")
+  def test_world(self):
+    self.assertEqual(world(), "Hello world!", "Function should return 'Hello world!'")

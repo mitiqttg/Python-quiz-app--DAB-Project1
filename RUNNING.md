@@ -22,4 +22,4 @@ sometimes grading is slower so it might be necessary to run the tests multiple t
 The k6 performance tests can be run with the following commands while the server is running.
 - In the `k6` folder:
     `k6 run load-page-performance-test.js`          
-    `k6 run submit-assignment-performance-test.js`  
+    `k6 run submission-performance-test.js`  
