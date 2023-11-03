@@ -15,7 +15,5 @@ export default function () {
   };
 
   http.get("http://localhost:7800");
-  http.post(
-    "http://localhost:7800/api/submit",
-    JSON.stringify(data))
+  http.post("http://localhost:7800/api/submit", JSON.stringify(data))
 }

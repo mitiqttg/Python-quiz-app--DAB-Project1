@@ -25,7 +25,7 @@ let InGrading = false;
 
 const StartGrading = async() => {
 
-  //If grading is already in progress, don't start another one
+  // Just one assignment being graded at a time
   if (InGrading) {
     return;
   }

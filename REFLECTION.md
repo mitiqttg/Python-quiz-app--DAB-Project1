@@ -1,24 +1,21 @@
-The application is divided into four main components and the database. The components are:
-
-- Programming-ui:
-  A system that controls the browser UI and allows user input. When a user creates a submission, programming-ui sends it to programming-api as a POST request.
-  After submitting an assignment, programming-ui sends a GET request for submission feedback to programming-api every second until feedback is received.
-
-- Programming-api:
-  A system that receives user submissions and provides programming-ui with the correct assignments and submission feedback for each user. 
-  Programming-api communicates with the database for saving user submissions and grader results and fetching assignments.
-  When receiving new submission, programming-api checks if they need to be graded, and sends the submission to grader-api as a POST request if grading is needed.
+Description of the application:
 
 - Grader-api:
-  A system that receives ungraded submissions and sends them to grader-image one at a time.
-  When grading is done in grader-image, grader-api sends the results as a ping on a channel that is listened to by programming-api. This is done with a Reids client.
+ Processes submissions and grade them one by one in a grader-image. When completed the grading process, sends the results as a notification through a channel. The programming-api listens to this channel and receives the results using a Redis client.
 
 - Grader-image: 
-  An image that takes a program submission, runs it and compares the result to a model solution, and provides feedback on if the submission was correct or not.
+  Receives a program submission, executes it, compares the output to a model solution, and feedbacks on the submission correctness.
 
+- Programming-ui:
+  Takes care of the browser UI. When a user make a submission, programming-ui sends a POST request to programming-api. After submitted, programming-ui sends a GET request to programming-api until feedback is received.
+
+- Programming-api:
+  Receives user submissions and sends programming-ui assignments and feedbacks. Programming-api interacts with the database to store user submissions and grader results, as well as to retrieve assignments. When receiving new submissions, programming-api assesses whether they require grading and, if necessary, forwards the submission to grader-api using a POST request.
 
 Possible improvements:
-- Currently, by far the slowest function of the application is grading submissions. This could be sped up by improving the grader-image as well as
-  creating more replicas of grader-api and grader-image to improve simultaneous grading.
-- Programming-ui could be improved so that it better utilizes static content
-- Caching in all parts of the application could be improved so that it's better defined which data should be cached and for how long.
+
++ Programming-ui could be improved so that it better utilizes static content.
+  
++ Caching in all parts of the application could be improved so that it's better defined which data should be cached and for how long.
+  
++ Improving the grader-image and creating more replicas of grader-api and grader-image to improve parallel grading.

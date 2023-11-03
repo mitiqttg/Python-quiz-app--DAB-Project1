@@ -4,6 +4,12 @@ class makeQueue {
     this.head = 0;
     this.tail = 0;
   }
+  get length() {
+    return this.tail - this.head;
+  }
+  get isEmpty() {
+    return this.length === 0;
+  }
   enqueue(element) {
     this.elements[this.tail] = element;
     this.tail++;
@@ -13,12 +19,6 @@ class makeQueue {
     delete this.elements[this.head];
     this.head++;
     return item;
-  }
-  get length() {
-    return this.tail - this.head;
-  }
-  get isEmpty() {
-    return this.length === 0;
   }
   peek() {
     return this.elements[this.head];
