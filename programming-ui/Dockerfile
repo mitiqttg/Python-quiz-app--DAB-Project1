@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.17
+FROM node:alpine3.20
 
 EXPOSE 3000
 

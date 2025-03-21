@@ -1,5 +1,3 @@
-version: "3.4"
-
 volumes:
   astro_node_modules:
 
@@ -92,7 +90,7 @@ services:
       - project.env
 
   flyway:
-    image: flyway/flyway:9.11.0-alpine
+    image: flyway/flyway:11.3.3-alpine
     depends_on:
       - database
     volumes:

@@ -1,7 +1,7 @@
 Description of the application:
 
 - Grader-api:
-  Processes submissions and grade them one by one in a grader-image. When      completed the grading process, sends the results as a notification through a channel. The programming-api listens to this channel and receives the results using a Redis client.
+  Processes submissions and grade them one by one in a grader-image. When completed the grading process, sends the results as a notification through a channel. The programming-api listens to this channel and receives the results using a Redis client.
 
 - Grader-image: 
   Receives a program submission, executes it, compares the output to a model solution, and feedbacks on the submission correctness.

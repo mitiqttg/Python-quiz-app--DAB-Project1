@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.20
 
 RUN apk add bash
 RUN apk add python3 py3-pip
