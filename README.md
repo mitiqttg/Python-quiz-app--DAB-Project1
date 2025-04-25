@@ -1,6 +1,7 @@
 # Designing and Building Scalable Web Applications / Course Project I Template
 
 Deployment: `expired link`
+
 This application is built for Python programming practice, where you receive the exercises and get feedback from the grader to improve the output.
 
 Detail description:
