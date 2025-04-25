@@ -1,26 +1,24 @@
 # Designing and Building Scalable Web Applications / Course Project I Template
 
-Provides an endpoint for grading programming assignments. Has the functionality
-needed to create a grader image based on `grader-image` and to copy source code
-and test code to the image.
+Deployment: `expired link`
+This application is built for Python programming practice, where you receive the exercises and get feedback from the grader to improve the output.
 
-When the grader API is run, the Docker daemon should be exposed to the grader
-API to allow running the created Docker images.
+Detail description:
 
-This is done by mapping the docker daemon socket to the grader api in the
-`docker-compose.yml` file, e.g.
+- Grader-api:
+  Processes submissions and grade them one by one in a grader-image. When completed the grading process, sends the results as a notification through a channel. The programming-api listens to this channel and receives the results using a Redis client.
 
-```
-# ...
-  grader-api:
-    build: grader-api
-    image: grader-api
-    restart: "no"
-    volumes:
-      - ./grader-api/:/app
-      - ./app-cache/:/app-cache
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    ports:
-      - 7000:7000
-# ...
-```
+- Grader-image: 
+  Receives a program submission, executes it, compares the output to a model solution, and feedbacks on the submission correctness.
+
+- Programming-ui:
+  Takes care of the browser UI. When a user make a submission, programming-ui sends a POST request to programming-api. After submitted, programming-ui sends a GET request to programming-api until feedback is received.
+
+- Programming-api:
+  Receives user submissions and sends programming-ui assignments and feedbacks. Programming-api queries the database to store user submissions/grader results and to retrieve assignments. When receiving new submissions, programming-api assesses whether they require grading and, if necessary, forwards the submission to grader-api using a POST request.
+
+Possible improvements:
+
++ Utilizes static content for programming-ui.
+    
++ Improving the grader-image and creating more replicas of grader-api and grader-image to improve parallel grading.
